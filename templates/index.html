@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flask Assets GAE Example</title>
+    <!--  assets应用 -->
+  {% assets "css" %}
+    <link href="{{ ASSET_URL }}" rel="stylesheet">
+  {% endassets %}
+    <!--  常规引用 -->
+    <link href="{{ url_for('static', filename='css/test.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/test1.css') }}" rel="stylesheet">
+</head>
+<body>
+
+  <p id="main-text" class="center">beautiful</p>
+    <!--  assets应用 -->
+  {% assets "js" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+  {% endassets %}
+    <!--  常规引用 -->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/test.js') }}"></script>
+</body>
+</html>
