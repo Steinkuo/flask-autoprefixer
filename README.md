@@ -9,7 +9,7 @@ Flask-Assets 能够帮助我们将多个 CSS 或 JS 文件合并成为一个大�
 
 而Autoprefixer解析CSS文件并且添加浏览器前缀到CSS规则里，使用Can I Use的数据来决定哪些前缀是需要的。
 
-##安装 Flask-Assets和Autoprefixer
+##安装 Flask-Assets和Autoprefixer##
 ``` python
 pip install Flask Flask-Assets cssmin jsmin
 pip freeze > requirements.txt
@@ -48,14 +48,20 @@ if __name__ == '__main__':
     app.run()
 ```
 
-NOTE 1: Bundel() 的构造器能够接受无限个文件名作为非关键字参数, 定义那些文件需要被打包, 这里主要打包本地 static 下的 CSS 和 JS 两种类型文件. 
-NOTE 2: 关键字参数 filters 定义了这些需要被打包的文件通过那些过滤器(可以为若干个)进行预处理, 这里使用了 cssmin/jsmin 会将 CSS/JS 文件中的空白符和换行符去除. 
-NOTE 3: 关键字参数 output 定义了打包后的包文件的存放路径 
+NOTE 1: Bundel() 的构造器能够接受无限个文件名作为非关键字参数, 定义那些文件需要被打包, 这里主要打包本地 static 下的 CSS 和 JS 两种类型文件.
+
+NOTE 2: 关键字参数 filters 定义了这些需要被打包的文件通过那些过滤器(可以为若干个)进行预处理, 这里使用了 cssmin/jsmin 会将 CSS/JS 文件中的空白符和换行符去除.
+
+NOTE 3: 关键字参数 output 定义了打包后的包文件的存放路径
+
 NOTE 4: 上述的所有路径的前缀都会默认为 ./static/
+
 NOTE 5: ProdConfig 不需要修改, 默认是自动打包压缩的
-###注意: 在开发环境下不应该将 CSS/JS 文件打包, 因为我们可能会经常对这些文件进行修改, 所以需要设定在开发环境中不打包, 但生产环境中会自动进行打包.
+
+####注意: 在开发环境下不应该将 CSS/JS 文件打包, 因为我们可能会经常对这些文件进行修改, 所以需要设定在开发环境中不打包, 但生产环境中会自动进行打包.####
 
 使用特殊的 Jinja 控制代码来修改 templates 中的 CSS/JS 引用标签 <link> 或 <script>
+
 ``` html
 <!DOCTYPE html>
 <html lang="en">
@@ -95,15 +101,20 @@ FLASK_DEBUG=1 python app.py
 这里可以看到打包的效果，速度和容量都有优化，特别是多个文件的情况。
 
 将 autoprefixer应用到Flask-Assets中
+
 由于需要使用postcss，用npm或者yarn下载一个
-``` bash
+
+```bash
 # 由于pip库里没有postcss，自己下一个吧
 npm install postcss-cli autoprefixer --save-dev
-配置autoprefixer， Flask-assets中已有相关类，直接配置参数就行
 ```
+
+配置autoprefixer， Flask-assets中已有相关类，直接配置参数就行
+
  AUTOPREFIXER_BIN 是指向postcss运行绝对路径下的bin
 
  AUTOPREFIXER_BROWSERS 是配置浏览器版本的
+
 ``` python
 import os
 # get work root
@@ -116,6 +127,7 @@ app.config['AUTOPREFIXER_BIN'] = basedir + '/node_modules/postcss-cli/bin/postcs
 app.config['AUTOPREFIXER_BROWSERS'] = ['> 1%', 'last 2 versions', 'firefox 24', 'opera 12.1']
 ```
 最后加到flask-assets 就行了
+
 ``` python
 # Define the set for js and css file.
 css = Bundle(
@@ -124,9 +136,11 @@ css = Bundle(
     filters='autoprefixer6, cssmin',
     output='assets/css/common.css')
 ```
+
 注：autoprefixer >=6 时需要使用autoprefixer6，不然会失败的。
 
 我们可以使用 flask 指令的方式来打包 CSS/JS 文件
+
 ``` bash
 (venv) ➜ flask assets clean
 Cleaning generated assets...
@@ -137,7 +151,9 @@ Deleted asset: assets/css/common.css
 Building bundle: assets/js/common.js
 Building bundle: assets/css/common.css
  ```
+
 来查看一下
+
 ``` js
 <!--   编译前    -->
 a {
@@ -161,8 +177,11 @@ color : #ccc
 /*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInN0ZGluIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFDQTtBQUNBLG1EQUFtRDtBQUNuRCxjQUFjO0NBQ2I7QUFDRDtBQUNBLFlBQVk7Q0FDWDtBQUZEO0FBQ0EsWUFBWTtDQUNYO0FBRkQ7QUFDQSxZQUFZO0NBQ1g7QUFGRDtBQUNBLFlBQVk7Q0FDWCIsImZpbGUiOiJzdGRpbiIsInNvdXJjZXNDb250ZW50IjpbIlxuYSB7XG5iYWNrZ3JvdW5kIDogbGluZWFyLWdyYWRpZW50KHRvIHRvcCwgYmxhY2ssIHdoaXRlKTtcbmRpc3BsYXkgOiBmbGV4XG59XG46OnBsYWNlaG9sZGVyIHtcbmNvbG9yIDogI2NjY1xufSJdfQ== */
 ```
 这样就完成了
+
 这样我们就能够通过指令 flask  assets --help 来查看其使用方法了:
+
 项目地址: https://github.com/Steinkuo/flask-autoprefixer.git
+
 ``` bash
 (venv) ➜ flask assets --help
 Usage: flask assets [OPTIONS] COMMAND [ARGS]...
